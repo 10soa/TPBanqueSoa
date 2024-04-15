@@ -37,7 +37,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Id"/>
                                 </f:facet>
-                                <h:link value="#{item.id}"/>
+                                <h:link value="#{item.id}" outcome="retraitDepot?id=#{item.id}"/>
                             </p:column>
 
                             <p:column filterBy="#{item.nom}">

@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/template/template_default.xhtml">
+
+            <ui:define name="metadata">
+                <f:metadata>
+                    <f:viewParam name="id" value="#{retraitDepot.id}"
+                                 required="true"/>
+                    <f:viewAction action="#{retraitDepot.loadCompte}"/>
+                </f:metadata>
+            </ui:define>
+
+            <ui:define name="top">
+                Faire un : RETRAIT ou DEPOT
+            </ui:define>
+
+            <ui:define name="content">
+                <f:view>
+                    <h:form rendered='#{retraitDepot.compte != null}'>
+                        <h1><h:outputText value="Faire : RETRAIT ou DEPOT"/></h1>
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Solde" for="solde" />
+                            <h:inputText id="solde" value="#{retraitDepot.solde}" title="Solde" />
+                            <h:outputLabel value="Action :" for="action" />
+                            <h:selectOneMenu value="#{retraitDepot.action}">
+                                <f:selectItem itemLabel="..." itemValue="null" />
+                                <f:selectItem itemLabel="Faire un dépôt" itemValue="action2" />
+                                <f:selectItem itemLabel="Faire un retrait" itemValue="action1" />
+                            </h:selectOneMenu>
+                            <h:commandButton id="update" value="Valider cette action" action="#{retraitDepot.confirmer()}"/>
+                            <h:messages globalOnly="true" layout="table" style="color: green;" />
+                        </h:panelGrid>
+                    </h:form>
+                    <h:messages/>
+                    <h:outputText value="Aucun compte avec l'id #{retraitDepot.id} !" 
+                                  rendered='#{retraitDepot.compte == null}' 
+                                  style="font-weight: bold; color: red;" />
+
+                    <h:button id="back" value="Revenir à la liste" outcome="listeDesComptes"/>
+                </f:view>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

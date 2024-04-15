@@ -79,4 +79,16 @@ public class GestionnaireCompte implements Serializable {
     public CompteBancaire findById(Long idCompte) {
         return em.find(CompteBancaire.class, idCompte);
     }
+    
+    @Transactional
+    public void retrait(CompteBancaire source,int montant) {
+        source.retirer(montant);
+        update(source);
+    }
+    
+    @Transactional
+    public void depot(CompteBancaire source,int montant) {
+        source.deposer(montant);
+        update(source);
+    }
 }
