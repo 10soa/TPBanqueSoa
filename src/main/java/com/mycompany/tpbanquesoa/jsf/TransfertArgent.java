@@ -5,6 +5,7 @@
 package com.mycompany.tpbanquesoa.jsf;
 
 import com.mycompany.tpbanquesoa.entities.CompteBancaire;
+import com.mycompany.tpbanquesoa.jsf.util.Util;
 import com.mycompany.tpbanquesoa.service.GestionnaireCompte;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
@@ -57,7 +58,26 @@ public class TransfertArgent {
     public String transferer() {
         CompteBancaire compteSource=gComptes.findById(source);
         CompteBancaire compteDestinataire=gComptes.findById(destinataire);
+         boolean erreur = false;
+        if(compteSource==null){
+            Util.messageErreur("(Source) Aucun compte trouvé!");
+            erreur=true;
+        }else if(compteDestinataire==null){
+            Util.messageErreur("(Destinataire) Aucun compte trouvé!");
+            erreur=true;
+        }else if(solde<0){
+            Util.messageErreur("Veuillez saisir un autre solde!");
+            erreur=true;
+        }else if(compteSource.getSolde()<solde){
+            Util.messageErreur("Transaction non réussie : Solde insuffisant!");
+            erreur=true;
+        }
+        
+        if(erreur){
+            return null;
+        }
         gComptes.transferer(compteSource, compteDestinataire, solde);
+        Util.addFlashInfoMessage(solde+" Euro : transaction de ("+compteSource.getNom()+" vers "+compteDestinataire.getNom()+")!");
         return "listeDesComptes";
     }
     
