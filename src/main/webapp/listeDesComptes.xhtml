@@ -59,6 +59,14 @@
                                 </f:facet>
                                 <h:link outcome="modificationCompte?id=#{item.id}" value="Modifier"/>
                             </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value=""/>
+                                </f:facet>
+                                <p:commandLink action="#{comptesListe.suppressionCompte(item)}">
+                                    <h:graphicImage name="images/1.png" styleClass="icone" width="25" height="25"/>
+                                </p:commandLink>
+                            </p:column>
                         </p:dataTable>
                     </h:form>
                     <h:messages/>

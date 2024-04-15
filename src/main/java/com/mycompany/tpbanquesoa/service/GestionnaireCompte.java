@@ -97,4 +97,9 @@ public class GestionnaireCompte implements Serializable {
         compte.setNom(nom);
         update(compte);
     }
+    
+    @Transactional
+    public void supprimer(CompteBancaire compte) {
+        em.remove(em.merge(compte));
+    }
 }

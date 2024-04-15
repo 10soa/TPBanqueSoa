@@ -5,6 +5,7 @@
 package com.mycompany.tpbanquesoa.jsf;
 
 import com.mycompany.tpbanquesoa.entities.CompteBancaire;
+import com.mycompany.tpbanquesoa.jsf.util.Util;
 import com.mycompany.tpbanquesoa.service.GestionnaireCompte;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
@@ -35,6 +36,12 @@ public class ComptesListe implements Serializable {
             compte= bean.getAllComptes();
         }
         return compte;
+    }
+    
+    public String suppressionCompte(CompteBancaire compteBancaire) {
+        bean.supprimer(compteBancaire);
+        Util.addFlashInfoMessage(compteBancaire.getNom() + " : Compte supprimé avec succés!");
+        return "listeDesComptes?faces-redirect=true";
     }
     
 }
