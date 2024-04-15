@@ -53,6 +53,12 @@
                                 </f:facet>
                                 <h:outputText value="#{item.solde}"/>
                             </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value=""/>
+                                </f:facet>
+                                <h:link outcome="modificationCompte?id=#{item.id}" value="Modifier"/>
+                            </p:column>
                         </p:dataTable>
                     </h:form>
                     <h:messages/>

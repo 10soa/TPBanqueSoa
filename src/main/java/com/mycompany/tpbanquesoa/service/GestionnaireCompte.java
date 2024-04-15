@@ -37,7 +37,7 @@ import jakarta.persistence.EntityManager;
 @Named(value = "gestionnaireCompte")
 @ApplicationScoped
 public class GestionnaireCompte implements Serializable {
-    
+
     @PersistenceContext(unitName = "banquePU")
     private EntityManager em;
 
@@ -46,7 +46,7 @@ public class GestionnaireCompte implements Serializable {
      */
     public GestionnaireCompte() {
     }
-    
+
     public List<CompteBancaire> getAllComptes() {
         TypedQuery<CompteBancaire> query = em.createNamedQuery("CompteBancaire.findAll", CompteBancaire.class);
         return query.getResultList();
@@ -75,20 +75,26 @@ public class GestionnaireCompte implements Serializable {
     public CompteBancaire update(CompteBancaire compteBancaire) {
         return em.merge(compteBancaire);
     }
-    
+
     public CompteBancaire findById(Long idCompte) {
         return em.find(CompteBancaire.class, idCompte);
     }
-    
+
     @Transactional
-    public void retrait(CompteBancaire source,int montant) {
+    public void retrait(CompteBancaire source, int montant) {
         source.retirer(montant);
         update(source);
     }
-    
+
     @Transactional
-    public void depot(CompteBancaire source,int montant) {
+    public void depot(CompteBancaire source, int montant) {
         source.deposer(montant);
         update(source);
+    }
+
+    @Transactional
+    public void modificationCompte(CompteBancaire compte, String nom) {
+        compte.setNom(nom);
+        update(compte);
     }
 }
