@@ -26,7 +26,6 @@ public class InitBean implements Serializable{
     
     @Inject
     private GestionnaireCompte gCompte;
-    private CompteBancaire[] tab=new CompteBancaire[4];
     
     /**
      * Creates a new instance of InitBean
@@ -34,14 +33,6 @@ public class InitBean implements Serializable{
     public InitBean() {
     }
     
-    public void getComptes(){
-        CompteBancaire[] rep=new CompteBancaire[4];
-        rep[0] = new CompteBancaire("John Lennon",150000);
-        rep[1] = new CompteBancaire("Paul McCartney",950000);
-        rep[2] = new CompteBancaire("Ringo Starr",20000);
-        rep[3] = new CompteBancaire("Georges Harrisson",100000);
-        this.tab=rep;
-    }
     
     /**
      *
@@ -50,9 +41,13 @@ public class InitBean implements Serializable{
     @PostConstruct
     @Transactional
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init){
-        this.getComptes();
+        CompteBancaire[] rep=new CompteBancaire[4];
+        rep[0] = new CompteBancaire("John Lennon",150000);
+        rep[1] = new CompteBancaire("Paul McCartney",950000);
+        rep[2] = new CompteBancaire("Ringo Starr",20000);
+        rep[3] = new CompteBancaire("Georges Harrisson",100000);
         if(gCompte.nbComptes()<=0){
-            for (CompteBancaire compte : this.tab) {
+            for (CompteBancaire compte : rep) {
                 gCompte.creerCompte(compte);
             }
         }

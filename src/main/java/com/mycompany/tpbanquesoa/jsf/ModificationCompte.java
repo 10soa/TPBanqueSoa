@@ -56,17 +56,7 @@ public class ModificationCompte implements Serializable {
         this.compte = compte;
     }
 
-    public String modifier() {
-        boolean erreur=false;
-        if(this.nom.equals("")){
-            Util.messageErreur("Veuillez entre un nom!");
-            erreur = true;
-        }
-        
-        if(erreur){
-            return null;
-        }
-        
+    public String modifier() {  
         gComptes.modificationCompte(compte, nom);
         Util.addFlashInfoMessage("Modification du compte terminé!");
         return "listeDesComptes?faces-redirect=true";

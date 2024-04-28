@@ -27,7 +27,7 @@
                         <h1><h:outputText value="Modification du compte"/></h1>
                         <h:panelGrid columns="2">
                             <h:outputLabel value="Saisissez le nouveau nom :" for="nom" />
-                            <h:inputText id="nom" value="#{modificationCompte.nom}" title="Saisissez le nouveau nom :" />
+                            <h:inputText id="nom" value="#{modificationCompte.nom}" title="Saisissez le nouveau nom :"  required="true"/>
                             <h:commandButton id="update" value="MODIFIER" action="#{modificationCompte.modifier()}"/>
                             <h:messages globalOnly="true" layout="table" style="color: green;" />
                         </h:panelGrid>

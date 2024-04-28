@@ -51,15 +51,6 @@ public class CreationCompte {
     }
     
     public String ajouterNouveauCompte(){
-        boolean erreur = false;
-        if(this.nom.equals("")){
-            Util.messageErreur("Ce champ est obligatoire!");
-            erreur=true;
-        }
-        
-        if(erreur){
-            return null;
-        }
         CompteBancaire compte=new CompteBancaire(this.nom,this.solde);
         gComptes.creerCompte(compte);
         Util.addFlashInfoMessage("Compte de ("+this.nom+") ajouté avec succés!");
