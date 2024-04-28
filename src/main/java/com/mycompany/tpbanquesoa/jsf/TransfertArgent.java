@@ -62,14 +62,16 @@ public class TransfertArgent {
         if(compteSource==null){
             Util.messageErreur("(Source) Aucun compte trouvé!");
             erreur=true;
-        }else if(compteDestinataire==null){
-            Util.messageErreur("(Destinataire) Aucun compte trouvé!");
-            erreur=true;
-        }else if(solde<0){
-            Util.messageErreur("Veuillez saisir un autre solde!");
-            erreur=true;
         }else if(compteSource.getSolde()<solde){
             Util.messageErreur("Transaction non réussie : Solde insuffisant!");
+            erreur=true;
+        }
+        if(compteDestinataire==null){
+            Util.messageErreur("(Destinataire) Aucun compte trouvé!");
+            erreur=true;
+        }
+        if(solde<0){
+            Util.messageErreur("Veuillez saisir un autre solde!");
             erreur=true;
         }
         
