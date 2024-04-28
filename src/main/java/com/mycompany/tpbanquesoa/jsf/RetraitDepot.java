@@ -10,6 +10,7 @@ import com.mycompany.tpbanquesoa.service.GestionnaireCompte;
 import jakarta.inject.Named;
 import jakarta.inject.Inject;
 import jakarta.faces.view.ViewScoped;
+import jakarta.persistence.OptimisticLockException;
 import java.io.Serializable;
 
 /**
@@ -66,36 +67,42 @@ public class RetraitDepot implements Serializable {
     }
 
     public String confirmer() {
-        boolean erreur = false;
-        if (solde <= 0) {
-            Util.messageErreur("Entrer un solde valide!");
-            erreur = true;
-        } else {
-            //action1: retrait
-            //action2: dépôt
-            if ("action1".equals(action)) {
-                if (compte.getSolde() < solde) {
-                    Util.messageErreur("Impossible de faire cette action : Fonds insuffisant!");
-                    erreur = true;
-                } else {
-                    gComptes.retrait(compte, solde);
-                    Util.addFlashInfoMessage("Retrait de " + solde + "Euro effectué! (" + compte.getNom() + ")");
-                }
-            } else if ("action2".equals(action)) {
-                gComptes.depot(compte, solde);
-                Util.addFlashInfoMessage("Dépôt de " + solde + "Euro effectué! (" + compte.getNom() + ")");
-            } else {
-                Util.messageErreur("Erreur du traitement de votre demande!");
+        try {
+            boolean erreur = false;
+            if (solde <= 0) {
+                Util.messageErreur("Entrer un solde valide!");
                 erreur = true;
+            } else {
+                //action1: retrait
+                //action2: dépôt
+                if ("action1".equals(action)) {
+                    if (compte.getSolde() < solde) {
+                        Util.messageErreur("Impossible de faire cette action : Fonds insuffisant!");
+                        erreur = true;
+                    } else {
+                        gComptes.retrait(compte, solde);
+                        Util.addFlashInfoMessage("Retrait de " + solde + "Euro effectué! (" + compte.getNom() + ")");
+                    }
+                } else if ("action2".equals(action)) {
+                    gComptes.depot(compte, solde);
+                    Util.addFlashInfoMessage("Dépôt de " + solde + "Euro effectué! (" + compte.getNom() + ")");
+                } else {
+                    Util.messageErreur("Erreur du traitement de votre demande!");
+                    erreur = true;
+                }
             }
-        }
 
-        if (erreur) {
+            if (erreur) {
+                return null;
+            }
+            return "listeDesComptes?faces-redirect=true";
+        } catch (OptimisticLockException ex) {
+            Util.messageErreur("Le compte de " + compte.getNom()
+                    + " a été modifié ou supprimé par un autre utilisateur !");
             return null;
         }
-        return "listeDesComptes?faces-redirect=true";
     }
-    
+
     public void loadCompte() {
         this.compte = gComptes.findById(id);
     }
