@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <body>
+
+        <ui:composition template="/WEB-INF/template/template_default.xhtml">
+
+            <ui:define name="metadata">
+                <f:metadata>
+                    <f:viewParam name="idCompte" value="#{operations.idCompte}"
+                                 required="true"/>
+                    <f:viewAction action="#{operations.loadCompte()}"/>
+                </f:metadata>
+            </ui:define>
+
+            <ui:define name="top">
+                Les opérations effectuées du compte #{operations.compteBancaire.nom}
+            </ui:define>
+
+            <ui:define name="content">
+                <h:body>
+                    <h:button id="back" value="Revenir à la liste" outcome="listeDesComptes"/>
+                    <h:form>
+                        <p:dataTable value="#{operations.operations}"
+                                     var="item"
+                                     paginator="true"
+                                     rows="10"
+                                     rowsPerPageTemplate="2,4,8,10"
+                                     widgetVar="Compte"
+                                     emptyMessage="Aucun Compte trouvé"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     >
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Id"/>
+                                </f:facet>
+                                <h:outputText value="#{item.id}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Description"/>
+                                </f:facet>
+                                <h:outputText value="#{item.description}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText escape="false" value="Historique&lt;br/>opérations"/>
+                                </f:facet>
+                                <h:outputText value="#{operations.getDateFormat(item.dateOperation)}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" type="localDateTime" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Montant"/>
+                                </f:facet>
+                                <h:outputText value="#{item.montant}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                    <h:messages/>
+                </h:body>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

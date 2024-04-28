@@ -67,6 +67,14 @@
                                     <h:graphicImage name="images/1.png" styleClass="icone" width="25" height="25"/>
                                 </p:commandLink>
                             </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText escape="false" value="Historique&lt;br/>opérations"/>
+                                </f:facet>
+                                <h:link value="+" outcome="operations">
+                                    <f:param name="idCompte" value="#{item.id}" />
+                                </h:link>
+                            </p:column>
                         </p:dataTable>
                     </h:form>
                     <h:messages/>
