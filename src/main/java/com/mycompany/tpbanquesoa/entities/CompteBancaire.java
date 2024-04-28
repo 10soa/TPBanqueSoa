@@ -18,6 +18,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Version;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.List;
 @Table(name = "comptebancaire")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CompteBancaire.findAll", query = "SELECT compte FROM CompteBancaire compte"),
+    @NamedQuery(name = "CompteBancaire.findAll", query = "SELECT DISTINCT compte FROM CompteBancaire compte LEFT JOIN FETCH compte.operations"),
     @NamedQuery(name = "CompteBancaire.findByCompteBancaireId", query = "SELECT compte FROM CompteBancaire compte WHERE compte.id = :id")
 })
 public class CompteBancaire implements Serializable {
@@ -46,11 +47,21 @@ public class CompteBancaire implements Serializable {
     private String nom;
     @Column(name = "SOLDE")
     private int solde;
+    @Version
+    private int version;
     
     @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)  
     private List<OperationBancaire> operations = new ArrayList<>();
 
     public CompteBancaire() {
+    }
+    
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public CompteBancaire(String nom, int solde) {
